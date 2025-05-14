@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen flex flex-col items-center">
+
+  <!-- Navigation -->
+  <nav class="w-full flex justify-center py-6">
+    <ul class="flex gap-6 bg-white text-black rounded-full px-8 py-2 font-medium shadow-lg">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main class="flex flex-col items-center justify-center flex-1 text-center px-4">
+    <h1 class="text-6xl font-bold mb-6">Job tracker<span class="text-indigo-400 ml-1">✦</span></h1>
+
+    <!-- Search bar -->
+    <div class="flex items-center gap-4">
+      <input type="text" placeholder="Enter keywords..." class="px-6 py-3 rounded-full text-black w-80 focus:outline-none">
+      <button class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px]">
+        Create alert
+      </button>
+    </div>
+
+    <!-- Slogan -->
+    <p class="mt-10 text-lg text-gray-300">Never miss a job opportunity.</p>
+  </main>
+
+</body>
+</html>

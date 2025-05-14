@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>développeur Python - Jobs Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="w-full flex justify-center py-4 px-4">
+    <ul class="flex flex-wrap justify-center gap-4 sm:gap-6 bg-white text-black rounded-full px-6 py-2 font-medium shadow-lg text-sm sm:text-base">
+      <li><a href="index.html" class="hover:underline">Home</a></li>
+      <li><a href="jobs.html" class="hover:underline">Jobs</a></li>
+      <!-- <li><a href="companies.html" class="hover:underline">Companies</a></li> -->
+      <li><a href="pricing.html" class="hover:underline">Pricing</a></li>
+      <li><a href="blog.html" class="hover:underline">Blog</a></li>
+      <li><a href="login.html" class="hover:underline">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+    <!-- Main content -->
+  <main class="flex-grow px-4 py-8 max-w-5xl mx-auto">
+    <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8">Résultats pour : <span class="text-indigo-400">"développeur Python"</span></h1>
+
+    <div class="space-y-6">
+      <!-- Job card 1 -->
+      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-white">Développeur Python Backend</h2>
+        <p class="text-gray-300 text-sm mt-1">Togocom · Lomé · Temps plein</p>
+        <p class="text-gray-400 text-sm mt-3">Nous recherchons un développeur backend expérimenté avec des compétences solides en Python et Django.</p>
+        <div class="mt-4">
+          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+        </div>
+      </div>
+
+      <!-- Job card 2 -->
+      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-white">Stage Développeur Web</h2>
+        <p class="text-gray-300 text-sm mt-1">Startup Lomé · Lomé · Stage</p>
+        <p class="text-gray-400 text-sm mt-3">Tu es passionné(e) par le développement web et tu veux rejoindre une startup dynamique ? Ce stage est fait pour toi.</p>
+        <div class="mt-4">
+          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+        </div>
+      </div>
+
+      <!-- Job card 3 -->
+      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-semibold text-white">Data Analyst Junior</h2>
+        <p class="text-gray-300 text-sm mt-1">Konka Analytics · Remote · Temps partiel</p>
+        <p class="text-gray-400 text-sm mt-3">Analyse de données, visualisation avec Power BI, et manipulation de grands volumes de données.</p>
+        <div class="mt-4">
+          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaire de création d’alerte -->
+    <section class="mt-16 w-full flex flex-col items-center">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Créer une alerte</h2>
+      <p class="text-gray-300 text-sm mb-6 text-center">Activez une alerte pour les offres d'emploi similaires</p>
+      <form action="#" method="post" class="w-full max-w-md flex flex-col items-center space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="Nom"
+          required
+          class="w-full px-5 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          class="w-full px-5 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        />
+        <button
+          type="submit"
+          class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px] text-center"
+        >
+          Create alert
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-800 mt-12">
+    &copy; 2025 - Jobs Tracker. Tous droits réservés.
+  </footer>
+
+</body>
+</html>

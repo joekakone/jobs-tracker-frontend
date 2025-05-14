@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jobs Tracker - Alerts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="w-full flex justify-center py-4 px-4">
+    <ul class="flex flex-wrap justify-center gap-4 sm:gap-6 bg-white text-black rounded-full px-6 py-2 font-medium shadow-lg text-sm sm:text-base">
+      <li><a href="#" class="hover:underline">Home</a></li>
+      <li><a href="#" class="hover:underline">Pricing</a></li>
+      <li><a href="#" class="hover:underline">Blog</a></li>
+      <li><a href="#" class="hover:underline">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
+    <h1 class="text-4xl sm:text-6xl font-bold mb-6">Job tracker<span class="text-indigo-400 ml-1">✦</span></h1>
+
+    <!-- Search bar and alert button -->
+    <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
+      <input 
+        type="text" 
+        placeholder="Enter keywords..." 
+        class="px-5 py-3 rounded-full text-black w-full focus:outline-none text-sm sm:text-base" 
+      />
+      <button class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px]">
+        Create alert
+      </button>
+    </div>
+
+    <!-- Slogan -->
+    <p class="mt-8 text-gray-300 text-sm sm:text-lg">Never miss a job opportunity.</p>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-800 mt-12">
+    &copy; 2025 - Jobs Tracker. Tous droits réservés.
+  </footer>
+
+</body>
+</html>
