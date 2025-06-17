@@ -37,35 +37,83 @@
     <p class="text-gray-300 mb-6">Voici les offres d'emploi pour vous :</p>
   </section>
 
-  <!-- Job List -->
-  <section class="space-y-6 max-w-4xl mx-auto px-4">
-    <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-      <h2 class="text-xl font-semibold">Développeur Python Backend</h2>
-      <p class="text-gray-300 text-sm mt-1">Togocom · Lomé · Temps plein</p>
-      <p class="text-gray-400 text-sm mt-3">Nous recherchons un développeur backend expérimenté avec des compétences solides en Python et Django.</p>
-      <div class="mt-4">
-        <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
-      </div>
-    </div>
+<!-- Bottom Section (Aside + Job List + Form) -->
+<section class="max-w-4xl mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row gap-8">
 
-    <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-      <h2 class="text-xl font-semibold">Stage Développeur Web</h2>
-      <p class="text-gray-300 text-sm mt-1">Startup Lomé · Lomé · Stage</p>
-      <p class="text-gray-400 text-sm mt-3">Tu es passionné(e) par le développement web et tu veux rejoindre une startup dynamique ? Ce stage est fait pour toi.</p>
-      <div class="mt-4">
-        <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
-      </div>
-    </div>
+    <!-- ASIDE 1/4 -->
+    <aside class="w-full md:w-1/4 bg-gray-800 p-4 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-4 text-indigo-400">Menu Profil</h3>
+      <ul class="space-y-2 text-sm text-gray-300">
+        <li><a href="#" class="hover:text-white">Mon Compte</a></li>
+        <li><a href="#" class="hover:text-white">Mes Candidatures</a></li>
+        <li><a href="#" class="hover:text-white">Alertes Email</a></li>
+      </ul>
+    </aside>
 
-    <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-      <h2 class="text-xl font-semibold">Data Analyst Junior</h2>
-      <p class="text-gray-300 text-sm mt-1">Konka Analytics · Remote · Temps partiel</p>
-      <p class="text-gray-400 text-sm mt-3">Analyse de données, visualisation avec Power BI, et manipulation de grands volumes de données.</p>
-      <div class="mt-4">
-        <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+    <!-- CONTENU DROIT 3/4 -->
+    <div class="w-full md:w-3/4 space-y-6">
+
+<!-- Formulaire mots-clés aligné -->
+<form class="bg-gray-800 p-4 rounded-lg shadow space-y-4">
+  <label for="keywords" class="block text-sm font-medium text-gray-300 mb-2">
+    Mots-clés (séparés par des virgules) :
+  </label>
+  
+  <div class="flex space-x-4">
+    <input 
+      type="text" 
+      id="keywords" 
+      name="keywords" 
+      placeholder="ex: Python, Data Analyst, Remote" 
+      class="flex-grow px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+    >
+    <button 
+      type="submit" 
+      class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 whitespace-nowrap">
+      Rechercher
+    </button>
+  </div>
+</form>
+
+
+      <!-- Liste des 3 offres -->
+      <div class="space-y-6">
+        <!-- Job card 1 -->
+        <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <h2 class="text-xl font-semibold text-white">Développeur Python Backend</h2>
+          <p class="text-gray-300 text-sm mt-1">Togocom · Lomé · Temps plein</p>
+          <p class="text-gray-400 text-sm mt-3">Nous recherchons un développeur backend expérimenté avec des compétences solides en Python et Django.</p>
+          <div class="mt-4">
+            <a href="#" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+          </div>
+        </div>
+
+        <!-- Job card 2 -->
+        <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <h2 class="text-xl font-semibold text-white">Stage Développeur Web</h2>
+          <p class="text-gray-300 text-sm mt-1">Startup Lomé · Lomé · Stage</p>
+          <p class="text-gray-400 text-sm mt-3">Tu es passionné(e) par le développement web et tu veux rejoindre une startup dynamique ? Ce stage est fait pour toi.</p>
+          <div class="mt-4">
+            <a href="#" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+          </div>
+        </div>
+
+        <!-- Job card 3 -->
+        <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <h2 class="text-xl font-semibold text-white">Data Analyst Junior</h2>
+          <p class="text-gray-300 text-sm mt-1">Konka Analytics · Remote · Temps partiel</p>
+          <p class="text-gray-400 text-sm mt-3">Analyse de données, visualisation avec Power BI, et manipulation de grands volumes de données.</p>
+          <div class="mt-4">
+            <a href="#" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+          </div>
+        </div>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Footer -->
   <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-800 mt-12">
