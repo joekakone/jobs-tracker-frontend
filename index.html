@@ -24,28 +24,24 @@
   <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
     <h1 class="text-4xl sm:text-6xl font-bold mb-6">Jobs <span class="text-indigo-400 ml-1">✦</span> Tracker</h1>
 
-    <!-- Search bar avec filtres -->
-    <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-4xl">
+    <div class="flex flex-col sm:flex-row items-center w-full max-w-4xl bg-white rounded-3xl sm:rounded-full overflow-hidden shadow-lg">
 
-      <!-- Champ texte -->
       <input 
         type="text" 
         placeholder="Enter keywords..." 
-        class="px-5 py-3 rounded-full text-black w-full sm:w-auto flex-1 focus:outline-none text-sm sm:text-base" 
+        class="px-6 py-4 text-black w-full flex-1 focus:outline-none text-sm sm:text-base border-b sm:border-b-0 sm:border-r border-gray-200" 
       />
 
-      <!-- Dropdown Type de poste -->
       <select 
-        class="px-5 py-3 rounded-full text-black w-full sm:w-auto focus:outline-none text-sm sm:text-base">
+        class="px-4 py-4 text-black w-full sm:w-auto bg-white focus:outline-none text-sm sm:text-base border-b sm:border-b-0 sm:border-r border-gray-200 cursor-pointer">
         <option value="">Type de poste</option>
         <option value="stage">Stage</option>
         <option value="cdd">CDD</option>
         <option value="cdi">CDI</option>
       </select>
 
-      <!-- Dropdown Secteur -->
       <select 
-        class="px-5 py-3 rounded-full text-black w-full sm:w-auto focus:outline-none text-sm sm:text-base">
+        class="px-4 py-4 text-black w-full sm:w-auto bg-white focus:outline-none text-sm sm:text-base cursor-pointer">
         <option value="">Secteur</option>
         <option value="rh">RH</option>
         <option value="sante">Santé</option>
@@ -53,9 +49,8 @@
         <option value="agriculture">Agriculture</option>
       </select>
 
-      <!-- Bouton Search -->
       <a href="results.html" 
-        class="bg-white text-black font-medium px-6 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px] text-center">
+        class="bg-indigo-600 text-white font-bold px-8 py-4 hover:bg-indigo-700 transition text-sm sm:text-base min-w-[120px] text-center">
         Search
       </a>
 
