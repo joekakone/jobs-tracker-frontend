@@ -24,19 +24,41 @@
   <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
     <h1 class="text-4xl sm:text-6xl font-bold mb-6">Jobs <span class="text-indigo-400 ml-1">✦</span> Tracker</h1>
 
-    <!-- Search bar and alert button -->
-    <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
+    <!-- Search bar avec filtres -->
+    <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-4xl">
+
+      <!-- Champ texte -->
       <input 
         type="text" 
         placeholder="Enter keywords..." 
-        class="px-5 py-3 rounded-full text-black w-full focus:outline-none text-sm sm:text-base" 
+        class="px-5 py-3 rounded-full text-black w-full sm:w-auto flex-1 focus:outline-none text-sm sm:text-base" 
       />
-      <!-- <button class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px]">
-        Create alert
-      </button> -->
-      <a href="results.html" class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px] text-center block sm:inline-block">
+
+      <!-- Dropdown Type de poste -->
+      <select 
+        class="px-5 py-3 rounded-full text-black w-full sm:w-auto focus:outline-none text-sm sm:text-base">
+        <option value="">Type de poste</option>
+        <option value="stage">Stage</option>
+        <option value="cdd">CDD</option>
+        <option value="cdi">CDI</option>
+      </select>
+
+      <!-- Dropdown Secteur -->
+      <select 
+        class="px-5 py-3 rounded-full text-black w-full sm:w-auto focus:outline-none text-sm sm:text-base">
+        <option value="">Secteur</option>
+        <option value="rh">RH</option>
+        <option value="sante">Santé</option>
+        <option value="distribution">Distribution</option>
+        <option value="agriculture">Agriculture</option>
+      </select>
+
+      <!-- Bouton Search -->
+      <a href="results.html" 
+        class="bg-white text-black font-medium px-6 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px] text-center">
         Search
       </a>
+
     </div>
 
     <!-- Slogan -->
