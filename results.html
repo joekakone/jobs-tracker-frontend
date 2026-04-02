@@ -1,96 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>développeur Python - Jobs Tracker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageTracker Togo - Trouvez votre stage de rêve</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom scrollbar pour garder l'aspect pro */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
+
+        /* Fixe la hauteur des colonnes internes par rapport à l'écran pour éviter des scrolls infinis 
+           mais permet au footer d'être atteint normalement en scrollant la page */
+        .results-container {
+            height: 80vh; /* Hauteur fixe pour la zone de recherche/résultats */
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen flex flex-col">
+<body class="bg-white text-gray-800 font-sans">
 
-  <!-- Navbar -->
-  <nav class="w-full flex justify-center py-4 px-4">
-    <ul class="flex flex-wrap justify-center gap-4 sm:gap-6 bg-white text-black rounded-full px-6 py-2 font-medium shadow-lg text-sm sm:text-base">
-      <li><a href="index.html" class="hover:underline">Home</a></li>
-      <li><a href="jobs.html" class="hover:underline">Jobs</a></li>
-      <!-- <li><a href="companies.html" class="hover:underline">Companies</a></li> -->
-      <li><a href="pricing.html" class="hover:underline">Pricing</a></li>
-      <li><a href="blog.html" class="hover:underline">Blog</a></li>
-      <li><a href="login.html" class="hover:underline">Login</a></li>
-    </ul>
-  </nav>
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 px-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between py-4">
+            <div class="text-2xl font-bold text-yellow-600">
+                Jobs<span class="text-gray-900">Tracker</span>
+            </div>
 
-  <!-- Main content -->
-    <!-- Main content -->
-  <main class="flex-grow px-4 py-8 max-w-5xl mx-auto">
-    <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8">Résultats pour : <span class="text-indigo-400">"développeur Python"</span></h1>
+            <div class="hidden md:flex space-x-8 font-medium">
+                <a href="index.html" class="hover:text-yellow-600 transition">Accueil</a>
+                <a href="index.html#propos" class="hover:text-yellow-600 transition">À propos</a>
+                <a href="index.html#services" class="hover:text-yellow-600 transition">Services</a>
+                <a href="index.html#comment" class="hover:text-yellow-600 transition">Comment ça marche ?</a>
+            </div>
 
-    <div class="space-y-6">
-      <!-- Job card 1 -->
-      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-white">Développeur Python Backend</h2>
-        <p class="text-gray-300 text-sm mt-1">Togocom · Lomé · Temps plein</p>
-        <p class="text-gray-400 text-sm mt-3">Nous recherchons un développeur backend expérimenté avec des compétences solides en Python et Django.</p>
-        <div class="mt-4">
-          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-full font-semibold transition shadow-lg">
+                Connexion
+            </button>
         </div>
-      </div>
+    </nav>
 
-      <!-- Job card 2 -->
-      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-white">Stage Développeur Web</h2>
-        <p class="text-gray-300 text-sm mt-1">Startup Lomé · Lomé · Stage</p>
-        <p class="text-gray-400 text-sm mt-3">Tu es passionné(e) par le développement web et tu veux rejoindre une startup dynamique ? Ce stage est fait pour toi.</p>
-        <div class="mt-4">
-          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
-        </div>
-      </div>
+    <div class="bg-gray-50 min-h-screen flex flex-col">
+        <!-- Search Section -->
+        <section class="sticky top-[73px] z-40 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 py-6 px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
+                    
+                    <div class="relative flex flex-col md:flex-row gap-4">
+                        <div class="relative flex-1">
+                            <input type="text" placeholder="Mots-clés (ex: Développeur, Comptable...)" class="w-full p-5 pl-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 text-lg">
+                            <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button id="filter-toggle" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 rounded-lg font-medium transition">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span>Filtres</span>
+                                <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300" id="filter-chevron"></i>
+                            </button>
+                            
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-10 rounded-lg font-bold transition shadow-md">
+                                Rechercher
+                            </button>
+                        </div>
+                    </div>
 
-      <!-- Job card 3 -->
-      <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-semibold text-white">Data Analyst Junior</h2>
-        <p class="text-gray-300 text-sm mt-1">Konka Analytics · Remote · Temps partiel</p>
-        <p class="text-gray-400 text-sm mt-3">Analyse de données, visualisation avec Power BI, et manipulation de grands volumes de données.</p>
-        <div class="mt-4">
-          <a href="job-details.html" class="text-indigo-400 hover:underline text-sm font-medium">Voir l'offre →</a>
+                    <div id="filter-container" class="hidden mt-6 pt-6 border-t border-gray-100">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-600">
+                                <option>Secteur d'activité</option>
+                                <option>Informatique</option>
+                                <option>Banque / Assurance</option>
+                            </select>
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-600">
+                                <option>Ville</option>
+                                <option>Lomé</option>
+                                <option>Kara</option>
+                            </select>
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-600">
+                                <option>Type d'emploi</option>
+                                <option>Stage</option>
+                                <option>CDD</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-500">
+                                <option>Niveau d'études</option>
+                                <option>Bac +2</option>
+                                <option>Bac +3</option>
+                                <option>Bac +4</option>
+                                <option>Bac +5</option>
+                            </select>
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-500">
+                                <option>Date de publication</option>
+                                <option>Dernières 24h</option>
+                            </select>
+                            <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none bg-gray-50 text-gray-500">
+                                <option>Rémunération</option>
+                                <option>Rémunéré</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <!-- <div class="max-w-6xl mx-auto flex flex-1 gap-6 py-6 w-full overflow-hidden"> -->
+        <div class="max-w-6xl mx-auto flex flex-1 gap-6 py-6 w-full h-[calc(100vh-120px)] overflow-hidden results-container">
+            <!-- Jobs List -->
+            <div class="w-full md:w-5/12 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+                <!-- Job Item 1 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border-2 border-yellow-500 cursor-pointer transition relative">
+                    <div class="absolute top-4 right-4 text-gray-400 hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Data Analyst</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-yellow-700 font-medium">Yas Togo</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-gray-100 px-2 py-1 rounded">Temps plein</span>
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo (Hybride)</p>
+                        <p class="text-gray-400 text-xs font-medium">Publié le 13 mai 2025</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 2 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Backend Developer</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">AGL</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-gray-100 px-2 py-1 rounded">Temps plein</span>
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 2 jours</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire UI/UX Designer</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">Sanlam Assurances</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 3 jours</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 4 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Community Manager</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">BB Lomé</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 1 semaine</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 5 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Réceptionniste</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">DIWA International</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 2 semaines</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire UI/UX Designer</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">Sanlam Assurances</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 3 jours</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 4 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Community Manager</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">BB Lomé</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 1 semaine</p>
+                    </div>
+                </div>
+
+                <!-- Job Item 5 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 cursor-pointer transition relative group">
+                    <div class="absolute top-4 right-4 text-gray-400 group-hover:text-yellow-600">
+                        <i class="fa-regular fa-bookmark text-lg"></i>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-900 leading-tight pr-8">Stagiaire Réceptionniste</h3>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-gray-700 font-medium">DIWA International</p>
+                        <div class="flex gap-2 text-xs">
+                            <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded font-bold">Stage</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <p class="text-gray-600 text-sm">Lomé, Togo</p>
+                        <p class="text-gray-400 text-xs font-medium">Il y a 2 semaines</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Details -->
+            <!-- <div class="hidden md:block w-7/12 bg-white rounded-xl shadow-sm border border-gray-200 overflow-y-auto flex flex-col custom-scrollbar"> -->
+            <div class="hidden md:flex w-7/12 bg-white rounded-xl shadow-sm border border-gray-200 h-full flex-col overflow-hidden">
+                <div class="p-6 border-b border-gray-100 shadow-sm shrink-0">
+                    <h2 class="text-2xl font-bold text-gray-900 font-sans">Stagiaire Data Analyst</h2>
+                    <div class="flex items-center mt-2 space-x-4">
+                        <a href="#" class="text-yellow-600 hover:underline font-medium">Yas Togo</a>
+                        <span class="text-gray-400">•</span>
+                        <span class="text-gray-600">Lomé, Togo</span>
+                    </div>
+                    <div class="mt-6 flex space-x-3">
+                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition flex-1 active:scale-95">
+                            Postuler maintenant
+                        </button>
+                        <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-lg transition">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-8 flex-1  leading-relaxed">
+                    <section class="mb-8">
+                        <h3 class="text-lg font-bold mb-4 text-gray-800 border-b pb-2">Description du poste</h3>
+                        <p class="text-gray-600 mb-4">
+                            Le groupe TOGOCOM, dans le cadre du renforcement de son équipe analytics et BI, recherche pour un contrat à durée indéterminée un.e <strong>Stagiaire Data Analyst</strong>.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h3 class="text-lg font-bold mb-4 text-gray-800">Missions principales :</h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                            <li>Gérer des rapports d'analyse de données pour répondre aux besoins précis.</li>
+                            <li>Étudier les données statistiques et produire des recommandations métiers.</li>
+                            <li>Construire, interpréter et diffuser les rapports BI & Analytics.</li>
+                            <li>Maîtriser les outils d'analyse pour suivre les performances de l'activité.</li>
+                        </ul>
+                    </section>
+
+                    <section class="mb-8">
+                        <h3 class="text-lg font-bold mb-4 text-gray-800">Compétences requises :</h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                            <li>Python 3, Django ou FastAPI.</li>
+                            <li>PostgreSQL, Git, Docker.</li>
+                            <li>Esprit d'équipe et communication claire.</li>
+                        </ul>
+                    </section>
+
+                    <section class="bg-yellow-50 p-6 rounded-xl border border-yellow-100">
+                        <h3 class="font-bold text-yellow-800 mb-2 italic">Note de JobsTracker :</h3>
+                        <p class="text-sm text-yellow-700">Ce stage est idéal pour les étudiants de l'UL ou de l'IAEC souhaitant se spécialiser dans la Data Science.</p>
+                    </section>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Formulaire de création d’alerte -->
-    <section class="mt-16 w-full flex flex-col items-center">
-      <h2 class="text-2xl font-semibold mb-6 text-center">Créer une alerte</h2>
-      <p class="text-gray-300 text-sm mb-6 text-center">Activez une alerte pour les offres d'emploi similaires</p>
-      <form action="#" method="post" class="w-full max-w-md flex flex-col items-center space-y-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Nom"
-          required
-          class="w-full px-5 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          class="w-full px-5 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-        />
-        <button
-          type="submit"
-          class="bg-white text-black font-medium px-5 py-3 rounded-full hover:bg-gray-200 transition text-sm sm:text-base min-w-[140px] text-center"
-        >
-          Create alert
-        </button>
-      </form>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-800 mt-12">
-    &copy; 2025 - Jobs Tracker. Tous droits réservés.
-  </footer>
-
+    <footer class="bg-gray-900 text-white pt-16 pb-8 px-8 shrink-0">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-800 pb-12">
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-2xl font-bold text-yellow-500 mb-6">JobsTracker</div>
+                <p class="text-gray-400">La plateforme n°1 pour les opportunités de stages et d'emplois au Togo.</p>
+                <div class="flex space-x-4 mt-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Liens Utiles</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Toutes les offres</a></li>
+                    <li><a href="#" class="hover:text-white transition">Stages à Lomé</a></li>
+                    <li><a href="#" class="hover:text-white transition">Stages à Kara</a></li>
+                    <li><a href="#" class="hover:text-white transition">Recruteurs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Support</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contactez-nous</a></li>
+                    <li><a href="#" class="hover:text-white transition">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-white transition">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Alerte Emploi</h4>
+                <p class="text-gray-400 mb-4 text-sm">Recevez les nouveaux stages chaque lundi matin.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Votre email" class="bg-gray-800 border-none p-3 rounded-l-lg w-full focus:ring-1 focus:ring-yellow-500 outline-none text-sm">
+                    <button class="bg-yellow-500 px-4 rounded-r-lg hover:bg-yellow-600 transition"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto flex flex-col md:row justify-between items-center mt-8 text-gray-500 text-xs">
+            <p>© 2026 JobsTracker Togo. Tous droits réservés.</p>
+            <p class="mt-2 md:mt-0">Fait avec <i class="fa fa-heart text-red-500"></i> à Lomé.</p>
+        </div>
+    </footer>
 </body>
+<script>
+    const toggleBtn = document.getElementById('filter-toggle');
+    const container = document.getElementById('filter-container');
+    const chevron = document.getElementById('filter-chevron');
+
+    toggleBtn.addEventListener('click', () => {
+        // Alterne l'affichage du container
+        container.classList.toggle('hidden');
+        // Fait pivoter le chevron
+        chevron.classList.toggle('rotate-180');
+    });
+</script>
 </html>
