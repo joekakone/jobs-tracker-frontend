@@ -1,67 +1,280 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jobs Tracker - Alerts</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageTracker Togo - Trouvez votre stage de rêve</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom scrollbar pour garder l'aspect pro */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
+
+        /* Fixe la hauteur des colonnes internes par rapport à l'écran pour éviter des scrolls infinis 
+           mais permet au footer d'être atteint normalement en scrollant la page */
+        .results-container {
+            height: 80vh; /* Hauteur fixe pour la zone de recherche/résultats */
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen flex flex-col">
+<body class="bg-white text-gray-800 font-sans flex flex-col h-screen">
 
-  <!-- Navbar -->
-  <nav class="w-full flex justify-center py-4 px-4">
-    <ul class="flex flex-wrap justify-center gap-4 sm:gap-6 bg-white text-black rounded-full px-6 py-2 font-medium shadow-lg text-sm sm:text-base">
-      <li><a href="index.html" class="hover:underline">Home</a></li>
-      <li><a href="jobs.html" class="hover:underline">Jobs</a></li>
-      <!-- <li><a href="companies.html" class="hover:underline">Companies</a></li> -->
-      <li><a href="pricing.html" class="hover:underline">Pricing</a></li>
-      <li><a href="blog.html" class="hover:underline">Blog</a></li>
-      <li><a href="login.html" class="hover:underline">Login</a></li>
-    </ul>
-  </nav>
+    <!-- Navbar (Fixe) -->
+    <nav class="bg-white border-b border-gray-100 shrink-0 px-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between py-4">
+            <div class="text-2xl font-bold text-yellow-600">
+                Jobs<span class="text-gray-900">Tracker</span>
+            </div>
 
-  <!-- Main content -->
-  <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
-    <h1 class="text-4xl sm:text-6xl font-bold mb-6">Jobs <span class="text-indigo-400 ml-1">✦</span> Tracker</h1>
+            <div class="hidden md:flex space-x-8 font-medium">
+                <a href="index.html" class="hover:text-yellow-600 transition">Accueil</a>
+                <a href="index.html#propos" class="hover:text-yellow-600 transition">À propos</a>
+                <a href="index.html#services" class="hover:text-yellow-600 transition">Services</a>
+                <a href="index.html#comment" class="hover:text-yellow-600 transition">Comment ça marche ?</a>
+            </div>
 
-    <div class="flex flex-col sm:flex-row items-center w-full max-w-4xl bg-white rounded-3xl sm:rounded-full overflow-hidden shadow-lg">
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-full font-semibold transition shadow-lg">
+                Connexion
+            </button>
+        </div>
+    </nav>
 
-      <input 
-        type="text" 
-        placeholder="Enter keywords..." 
-        class="px-6 py-4 text-black w-full flex-1 focus:outline-none text-sm sm:text-base border-b sm:border-b-0 sm:border-r border-gray-200" 
-      />
+    <header class="relative min-h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80')] bg-cover bg-center">
+        <div class="absolute inset-0 bg-white/80"></div>
 
-      <select 
-        class="px-4 py-4 text-black w-full sm:w-auto bg-white focus:outline-none text-sm sm:text-base border-b sm:border-b-0 sm:border-r border-gray-200 cursor-pointer">
-        <option value="stage">Stage</option>
-        <option value="cdd">CDD</option>
-        <option value="cdi">CDI</option>
-      </select>
+        <div class="relative z-10 text-center px-4 w-full max-w-5xl">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6">
+                Le futur de votre carrière <br><span class="text-yellow-600">commence ici au Togo</span>
+            </h1>
+            <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">La première plateforme dédiée aux stages académiques et aux premières opportunités professionnelles.</p>
 
-      <select 
-        class="px-4 py-4 text-black w-full sm:w-auto bg-white focus:outline-none text-sm sm:text-base cursor-pointer">
-        <option value="rh">RH</option>
-        <option value="sante">Santé</option>
-        <option value="distribution">Distribution</option>
-        <option value="agriculture">Agriculture</option>
-      </select>
+            <div class="bg-white p-4 rounded-2xl shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none">
+                        <option>Secteur d'activité</option>
+                        <option>Informatique</option>
+                        <option>Banque / Assurance</option>
+                        <option>Marketing</option>
+                    </select>
+                    <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none">
+                        <option>Ville</option>
+                        <option>Lomé</option>
+                        <option>Kara</option>
+                        <option>Atakpamé</option>
+                    </select>
+                    <select class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none">
+                        <option>Type d'emploi</option>
+                        <option>Stage</option>
+                        <option>CDD</option>
+                        <option>CDI</option>
+                    </select>
+                </div>
+                <div class="relative">
+                    <input type="text" placeholder="Mots-clés (ex: Développeur, Comptable...)" class="w-full p-5 pl-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 text-lg">
+                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
+                    <a href="results.html" class="mt-4 md:mt-0 md:absolute md:right-2 md:top-2 md:bottom-2 bg-yellow-500 hover:bg-yellow-600 text-white px-10 rounded-lg font-bold transition shadow-md flex items-center justify-center">
+                        Rechercher
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-      <a href="results.html" 
-        class="bg-indigo-600 text-white font-bold px-8 py-4 hover:bg-indigo-400 transition text-sm sm:text-base min-w-[120px] text-center">
-        Search
-      </a>
+    <section id="propos" class="py-20 px-8">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-yellow-600 font-bold uppercase tracking-widest">Notre Vision</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-4 mb-6 text-gray-900">Pourquoi JobsTracker Togo ?</h2>
+                <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                    Nous avons remarqué que les étudiants togolais peinent souvent à trouver un stage de fin d'études pertinent. 
+                    Notre mission est de digitaliser cette recherche en offrant une transparence totale sur les entreprises de la place.
+                </p>
+                <div class="flex space-x-4">
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h3 class="text-yellow-600 font-bold text-xl">100%</h3>
+                        <p class="text-sm text-gray-500">Gratuit pour les étudiants</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h3 class="text-yellow-600 font-bold text-xl">+50</h3>
+                        <p class="text-sm text-gray-500">Entreprises partenaires</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-100 h-80 rounded-3xl shadow-inner flex items-center justify-center">
+                <i class="fa fa-building text-yellow-500 text-9xl opacity-20"></i>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <section id="services" class="py-20 bg-gray-50 px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-16">Un accompagnement sur mesure</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition group border-t-4 border-transparent hover:border-yellow-500">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-briefcase text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Recherche de Stages</h3>
+                    <p class="text-gray-500">Accédez à des offres exclusives triées par ville et secteur.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition group border-t-4 border-transparent hover:border-yellow-500">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-star text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Avis Entreprises</h3>
+                    <p class="text-gray-500">Consultez les expériences des anciens stagiaires avant de postuler.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition group border-t-4 border-transparent hover:border-yellow-500">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-file-invoice text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Coaching & CV</h3>
+                    <p class="text-gray-500">Optimisez votre profil pour capter l'attention des recruteurs togolais.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Slogan -->
-    <p class="mt-8 text-gray-300 text-sm sm:text-lg">Never miss a job opportunity in Lomé.</p>
-  </main>
+    <section id="comment" class="py-20 px-8 bg-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">Comment ça marche ?</h2>
+            <div class="relative space-y-12">
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-yellow-200 -translate-x-1/2"></div>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between relative">
+                    <div class="md:w-5/12 text-right hidden md:block">
+                        <h4 class="font-bold text-lg text-yellow-600">Étape 1</h4>
+                        <p class="text-gray-500">Créez votre profil complet en 2 minutes.</p>
+                    </div>
+                    <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-white z-10 font-bold">1</div>
+                    <div class="md:w-5/12 text-left">
+                        <h4 class="font-bold text-lg md:hidden">Étape 1</h4>
+                        <p class="text-gray-500 md:hidden text-center">Créez votre profil en 2 minutes.</p>
+                        <div class="bg-gray-50 p-6 rounded-xl md:block hidden">Recherche de stage</div>
+                    </div>
+                </div>
+                
+                </div>
+        </div>
+    </section>
 
-  <!-- Footer -->
-  <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-800 mt-12">
-    &copy; 2025 - Jobs Tracker. Tous droits réservés.
-  </footer>
+    <section id="alerts" class="py-20 bg-gray-50 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-8">
+            
+            <div class="text-center mb-20">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Prenez une longueur d'avance avec JobsTracker</h2>
+                <p class="text-gray-500 mb-12 max-w-2xl mx-auto text-lg">
+                    Prenez le contrôle de votre avenir professionnel grâce aux informations partagées par d'autres étudiants et professionnels au Togo.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <div class="flex flex-col items-center group">
+                        <div class="w-20 h-20 rounded-full border-2 border-gray-200 flex items-center justify-center mb-6 group-hover:border-yellow-500 group-hover:bg-yellow-50 transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-briefcase text-2xl text-gray-600 group-hover:text-yellow-600"></i>
+                        </div>
+                        <p class="text-gray-800 font-semibold px-4 leading-snug">Trouvez des offres d'emploi et postulez</p>
+                    </div>
+
+                    <div class="flex flex-col items-center group">
+                        <div class="w-20 h-20 rounded-full border-2 border-gray-200 flex items-center justify-center mb-6 group-hover:border-yellow-500 group-hover:bg-yellow-50 transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-bell text-2xl text-gray-600 group-hover:text-yellow-600"></i>
+                        </div>
+                        <p class="text-gray-800 font-semibold px-4 leading-snug">Créez des alertes emploi personnalisées</p>
+                    </div>
+
+                    <div class="flex flex-col items-center group">
+                        <div class="w-20 h-20 rounded-full border-2 border-gray-200 flex items-center justify-center mb-6 group-hover:border-yellow-500 group-hover:bg-yellow-50 transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-building text-2xl text-gray-600 group-hover:text-yellow-600"></i>
+                        </div>
+                        <p class="text-gray-800 font-semibold px-4 leading-snug">Cherchez des avis sur les entreprises</p>
+                    </div>
+
+                    <div class="flex flex-col items-center group">
+                        <div class="w-20 h-20 rounded-full border-2 border-gray-200 flex items-center justify-center mb-6 group-hover:border-yellow-500 group-hover:bg-yellow-50 transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-money-bill-wave text-2xl text-gray-600 group-hover:text-yellow-600"></i>
+                        </div>
+                        <p class="text-gray-800 font-semibold px-4 leading-snug">Comparez les salaires et avantages</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 rounded-[2.5rem] p-12 shadow-2xl text-center max-w-4xl mx-auto relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-yellow-400 rounded-full opacity-50"></div>
+                
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-extrabold text-slate-900 mb-3">Créer une alerte</h3>
+                    <p class="text-yellow-900 font-medium mb-10 opacity-80">Activez une alerte pour ne manquer aucune opportunité</p>
+                    
+                    <form action="#" method="POST" class="max-w-md mx-auto space-y-5">
+                        <div class="relative">
+                            <input type="text" name="name" placeholder="Votre nom" 
+                                class="w-full px-8 py-5 rounded-full bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition border-none shadow-inner">
+                        </div>
+                        
+                        <div class="relative">
+                            <input type="email" name="email" placeholder="Votre email professionnel" 
+                                class="w-full px-8 py-5 rounded-full bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition border-none shadow-inner">
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button type="submit" 
+                                class="bg-slate-900 hover:bg-slate-800 text-white px-14 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl active:scale-95">
+                                Démarrer l'alerte
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white pt-16 pb-8 px-8 shrink-0">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-800 pb-12">
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-2xl font-bold text-yellow-500 mb-6">JobsTracker</div>
+                <p class="text-gray-400">La plateforme n°1 pour les opportunités de stages et d'emplois au Togo.</p>
+                <div class="flex space-x-4 mt-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Liens Utiles</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Toutes les offres</a></li>
+                    <li><a href="#" class="hover:text-white transition">Stages à Lomé</a></li>
+                    <li><a href="#" class="hover:text-white transition">Stages à Kara</a></li>
+                    <li><a href="#" class="hover:text-white transition">Recruteurs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Support</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contactez-nous</a></li>
+                    <li><a href="#" class="hover:text-white transition">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-white transition">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-yellow-500 uppercase text-sm">Alerte Emploi</h4>
+                <p class="text-gray-400 mb-4 text-sm">Recevez les nouveaux stages chaque lundi matin.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Votre email" class="bg-gray-800 border-none p-3 rounded-l-lg w-full focus:ring-1 focus:ring-yellow-500 outline-none text-sm">
+                    <button class="bg-yellow-500 px-4 rounded-r-lg hover:bg-yellow-600 transition"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto flex flex-col md:row justify-between items-center mt-8 text-gray-500 text-xs">
+            <p>© 2026 JobsTracker Togo. Tous droits réservés.</p>
+            <p class="mt-2 md:mt-0">Fait avec <i class="fa fa-heart text-red-500"></i> à Lomé.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
