@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Tracker - Générer un CV Professionnel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- html2pdf library for clean client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="static/img/jobs-tracker-favicon.svg">
+
+    <style>
+        /* Custom scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #D99311; }
+
+        /* A4 Page Simulation for dynamic previewing */
+        .cv-preview-sheet {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform-origin: top center;
+        }
+
+        /* Responsive zoom scaling helper for the preview frame */
+        @media (max-width: 1200px) {
+            .preview-scale-wrapper {
+                transform: scale(0.85);
+                transform-origin: top left;
+            }
+        }
+        @media (max-width: 1024px) {
+            .preview-scale-wrapper {
+                transform: scale(0.7);
+                transform-origin: top left;
+            }
+        }
+        @media (max-width: 768px) {
+            .preview-scale-wrapper {
+                transform: none;
+                width: 100%;
+            }
+            .cv-preview-sheet {
+                width: 100%;
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F2F2F2]/50 text-[#213140] font-sans selection:bg-[#D99311]/20">
+
+    <!-- Header Navigation -->
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 px-4 md:px-0">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4">
+            
+            <!-- Logo Section incorporating jobs-tracker-logo.svg -->
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="static/img/jobs-tracker-logo.svg" alt="JobsTracker Logo" class="h-10 w-10 transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex'">
+                <!-- Fallback in case SVG does not load instantly -->
+                <div id="logo-fallback" class="hidden h-10 w-10 rounded-xl bg-[#213140] items-center justify-center text-[#D99311]">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <div class="text-2xl font-bold text-[#213140]">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex space-x-8 font-semibold text-gray-600">
+                <a href="jobs.html" class="hover:text-[#D99311] transition">Offres d'emploi</a>
+                <a href="companies.html" class="hover:text-[#D99311] transition">Trouver une entreprise</a>
+                <a href="resume-generator.html" class="text-[#D99311] transition border-b-2 border-[#D99311] pb-1">Générer un CV</a>
+                <a href="alerts.html" class="hover:text-[#D99311] transition">Gérer les alertes</a>
+            </div>
+
+            <!-- CTA Connection -->
+            <button class="bg-[#213140] hover:bg-[#213140]/90 text-white px-6 py-2.5 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-[#213140]/20 active:scale-95">
+                Connexion
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <main class="max-w-7xl mx-auto px-4 md:px-0 py-8">
+        
+        <!-- Header Introduction -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-[#213140] tracking-tight">Générateur de CV Académique</h1>
+                <p class="text-gray-500 mt-1">Concevez un CV percutant, optimisé pour décrocher votre stage de rêve au Togo.</p>
+            </div>
+            
+            <!-- Quick Actions Toolbar -->
+            <div class="flex items-center gap-3">
+                <button onclick="downloadPDF()" class="bg-gradient-to-r from-[#D99311] to-[#A6751B] hover:from-[#A6751B] hover:to-[#D99311] text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-[#D99311]/20 transition-all duration-300 flex items-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span>Télécharger le CV (PDF)</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT COLUMN: Form Inputs & Template Selector (lg:col-span-5) -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- STEP 0: Template Selection -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm">
+                    <h2 class="text-lg font-bold text-[#213140] mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[#D99311]"></i>
+                        <span>1. Choisissez un template</span>
+                    </h2>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="switchTemplate('minimalist')" id="btn-tmpl-minimalist" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-[#D99311] bg-[#D99311]/5 transition-all text-xs font-bold text-[#213140]">
+                            <i class="fa-solid fa-file-lines text-xl mb-1.5 text-[#D99311]"></i>
+                            <span>Minimalist Gold</span>
+                        </button>
+                        <button onclick="switchTemplate('executive')" id="btn-tmpl-executive" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-transparent bg-[#F2F2F2]/60 hover:bg-[#F2F2F2] transition-all text-xs font-bold text-gray-500">
+                            <i class="fa-solid fa-id-card-clip text-xl mb-1.5"></i>
+                            <span>Executive</span>
+                        </button>
+                        <button onclick="switchTemplate('split')" id="btn-tmpl-split" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-transparent bg-[#F2F2F2]/60 hover:bg-[#F2F2F2] transition-all text-xs font-bold text-gray-500">
+                            <i class="fa-solid fa-columns text-xl mb-1.5"></i>
+                            <span>Creative Split</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 1: Personal Details Form -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm space-y-4">
+                    <h2 class="text-lg font-bold text-[#213140] border-b border-gray-100 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-user text-[#D99311]"></i>
+                        <span>Informations Personnelles</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Prénom</label>
+                            <input type="text" id="input-firstname" value="Joseph" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Nom</label>
+                            <input type="text" id="input-lastname" value="Koffi" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Titre Professionnel / Métier ciblé</label>
+                        <input type="text" id="input-jobtitle" value="Stagiaire Data Analyst" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email</label>
+                            <input type="email" id="input-email" value="joseph.koffi@email.com" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Téléphone</label>
+                            <input type="text" id="input-phone" value="+228 90 00 00 00" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Ville (Togo)</label>
+                            <input type="text" id="input-city" value="Lomé" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Lien LinkedIn (Optionnel)</label>
+                            <input type="text" id="input-linkedin" value="linkedin.com/in/joseph-koffi" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Accroche / Profil de présentation</label>
+                        <textarea id="input-summary" rows="3" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-medium transition-all">Étudiant rigoureux en informatique à l'Université de Lomé, passionné par la modélisation statistique et l'ingénierie des données. Compétences en extraction, manipulation et visualisation des données d'activité pour guider la stratégie d'entreprise.</textarea>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Work Experience Dynamic Fields -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <h2 class="text-lg font-bold text-[#213140] flex items-center gap-2">
+                            <i class="fa-solid fa-briefcase text-[#D99311]"></i>
+                            <span>Expérience Professionnelle</span>
+                        </h2>
+                        <button onclick="addExperience()" class="text-xs bg-[#D99311] hover:bg-[#A6751B] text-white font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Ajouter
+                        </button>
+                    </div>
+                    
+                    <div id="experience-fields-container" class="space-y-4">
+                        <!-- Experience input entries dynamically appended here -->
+                    </div>
+                </div>
+
+                <!-- STEP 3: Education Dynamic Fields -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                        <h2 class="text-lg font-bold text-[#213140] flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-[#D99311]"></i>
+                            <span>Éducation & Diplômes</span>
+                        </h2>
+                        <button onclick="addEducation()" class="text-xs bg-[#D99311] hover:bg-[#A6751B] text-white font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Ajouter
+                        </button>
+                    </div>
+                    
+                    <div id="education-fields-container" class="space-y-4">
+                        <!-- Education input entries dynamically appended here -->
+                    </div>
+                </div>
+
+                <!-- STEP 4: Skills & Languages -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm space-y-4">
+                    <h2 class="text-lg font-bold text-[#213140] border-b border-gray-100 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-gears text-[#D99311]"></i>
+                        <span>Compétences & Langues</span>
+                    </h2>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Compétences clés (Séparées par des virgules)</label>
+                        <input type="text" id="input-skills" value="SQL, Python, Power BI, Excel avancé, Pandas, Modélisation, Statistique" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Langues (Séparées par des virgules)</label>
+                        <input type="text" id="input-languages" value="Français (Maternelle), Anglais (Intermédiaire), Ewe" onkeyup="updateCV()" class="w-full p-3 bg-[#F2F2F2]/60 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D99311] focus:bg-white text-sm font-semibold transition-all">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Real-Time Preview Area (lg:col-span-7) -->
+            <div class="lg:col-span-7 flex flex-col items-center">
+                <!-- Preview Sticky Container -->
+                <div class="sticky top-24 w-full flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-4 border-b border-gray-200 pb-2">
+                        <span class="text-sm font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-eye text-[#D99311] mr-1.5"></i>Aperçu en temps réel</span>
+                        <div class="text-xs text-gray-400 font-semibold">Taille A4 Standard</div>
+                    </div>
+                    
+                    <!-- Zoom Scale Wrapper for Mobile Devices -->
+                    <div class="w-full overflow-x-auto custom-scrollbar flex justify-center py-2 bg-gray-100 rounded-2xl border border-gray-200">
+                        <div class="preview-scale-wrapper">
+                            <!-- Target sheet for raw print render / download -->
+                            <div id="cv-render-target" class="cv-preview-sheet text-gray-800 relative">
+                                <!-- Selected Template Render Dynamic Body Injection -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-[#213140] text-white pt-16 pb-8 px-4 md:px-0 shrink-0 mt-16">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-[#F2F2F2]/10 pb-12">
+            
+            <!-- Left Info Block -->
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-2xl font-bold text-white mb-6">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+                <p class="text-[#F2F2F2]/75 text-sm leading-relaxed mb-6">La plateforme n°1 pour les opportunités de stages académiques, alternances et premiers emplois au Togo.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Helpful Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Liens Utiles</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="jobs.html" class="hover:text-[#D99311] transition-colors">Toutes les offres</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Lomé</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Kara</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Espace Recruteurs</a></li>
+                </ul>
+            </div>
+
+            <!-- Support Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Support</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">FAQ / Aide</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Contactez-nous</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter Block -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Alerte Emploi</h4>
+                <p class="text-[#F2F2F2]/75 mb-4 text-xs leading-relaxed">Recevez directement les opportunités de stages fraichement collectées chaque lundi.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Votre adresse email" class="bg-white/10 border-none p-3.5 rounded-l-2xl w-full focus:ring-1 focus:ring-[#D99311] outline-none text-sm text-white placeholder-gray-400">
+                    <button class="bg-[#D99311] hover:bg-[#A6751B] px-5 rounded-r-2xl text-white transition-colors"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright Row -->
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mt-8 text-[#F2F2F2]/40 text-xs">
+            <p>© 2026 Jobs Tracker. Tous droits réservés.</p>
+            <p class="mt-2 md:mt-0">Fait avec <i class="fa fa-heart text-red-500"></i> à Lomé.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Generator State Handling Engine -->
+    <script>
+        // Default CV State Data
+        let currentTemplate = 'minimalist';
+        
+        let experiences = [
+            {
+                role: "Stagiaire Développeur décisionnel",
+                company: "Togocom, Lomé",
+                period: "Mars 2026 - Présent",
+                details: "Création et intégration de tableaux de bord financiers pour les directeurs de services."
+            }
+        ];
+
+        let educations = [
+            {
+                degree: "Licence en Informatique de Gestion",
+                school: "Université de Lomé",
+                period: "2023 - 2026",
+                details: "Mention Très Bien. Spécialisation en Analyse des Données et Architecture logicielle."
+            }
+        ];
+
+        // Template Switcher Trigger
+        function switchTemplate(templateName) {
+            currentTemplate = templateName;
+            
+            // Update button styles to reflect selected choice
+            ['minimalist', 'executive', 'split'].forEach(tmpl => {
+                const btn = document.getElementById(`btn-tmpl-${tmpl}`);
+                if (tmpl === templateName) {
+                    btn.className = "flex flex-col items-center justify-center p-3 rounded-xl border-2 border-[#D99311] bg-[#D99311]/5 transition-all text-xs font-bold text-[#213140]";
+                    const icon = btn.querySelector('i');
+                    icon.classList.add('text-[#D99311]');
+                } else {
+                    btn.className = "flex flex-col items-center justify-center p-3 rounded-xl border-2 border-transparent bg-[#F2F2F2]/60 hover:bg-[#F2F2F2] transition-all text-xs font-bold text-gray-500";
+                    const icon = btn.querySelector('i');
+                    icon.classList.remove('text-[#D99311]');
+                }
+            });
+
+            updateCV();
+        }
+
+        // Add dynamic Work Experience row
+        function addExperience() {
+            experiences.push({ role: '', company: '', period: '', details: '' });
+            renderFormLists();
+            updateCV();
+        }
+
+        // Remove dynamic Work Experience row
+        function removeExperience(index) {
+            experiences.splice(index, 1);
+            renderFormLists();
+            updateCV();
+        }
+
+        // Add dynamic Education row
+        function addEducation() {
+            educations.push({ degree: '', school: '', period: '', details: '' });
+            renderFormLists();
+            updateCV();
+        }
+
+        // Remove dynamic Education row
+        function removeEducation(index) {
+            educations.splice(index, 1);
+            renderFormLists();
+            updateCV();
+        }
+
+        // Reflect Form input edits on the programmatic data arrays
+        function onExperienceChange(index, key, value) {
+            experiences[index][key] = value;
+            updateCV();
+        }
+
+        function onEducationChange(index, key, value) {
+            educations[index][key] = value;
+            updateCV();
+        }
+
+        // Render input elements for Education & Experience
+        function renderFormLists() {
+            const expContainer = document.getElementById('experience-fields-container');
+            expContainer.innerHTML = '';
+            experiences.forEach((exp, index) => {
+                expContainer.innerHTML += `
+                    <div class="p-4 bg-[#F2F2F2]/40 border border-gray-200/80 rounded-xl space-y-3 relative">
+                        <button onclick="removeExperience(${index})" class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs">
+                            <i class="fa-solid fa-trash-can"></i> Supprimer
+                        </button>
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <input type="text" placeholder="Intitulé du poste" value="${exp.role}" onkeyup="onExperienceChange(${index}, 'role', this.value)" class="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                            <input type="text" placeholder="Entreprise & Ville" value="${exp.company}" onkeyup="onExperienceChange(${index}, 'company', this.value)" class="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <input type="text" placeholder="Période (ex: 2024 - 2026)" value="${exp.period}" onkeyup="onExperienceChange(${index}, 'period', this.value)" class="col-span-1 w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                            <input type="text" placeholder="Détails, réalisations..." value="${exp.details}" onkeyup="onExperienceChange(${index}, 'details', this.value)" class="col-span-2 w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-medium outline-none focus:ring-1 focus:ring-[#D99311]">
+                        </div>
+                    </div>
+                `;
+            });
+
+            const eduContainer = document.getElementById('education-fields-container');
+            eduContainer.innerHTML = '';
+            educations.forEach((edu, index) => {
+                eduContainer.innerHTML += `
+                    <div class="p-4 bg-[#F2F2F2]/40 border border-gray-200/80 rounded-xl space-y-3 relative">
+                        <button onclick="removeEducation(${index})" class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs">
+                            <i class="fa-solid fa-trash-can"></i> Supprimer
+                        </button>
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <input type="text" placeholder="Diplôme ou certification" value="${edu.degree}" onkeyup="onEducationChange(${index}, 'degree', this.value)" class="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                            <input type="text" placeholder="Établissement" value="${edu.school}" onkeyup="onEducationChange(${index}, 'school', this.value)" class="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <input type="text" placeholder="Période" value="${edu.period}" onkeyup="onEducationChange(${index}, 'period', this.value)" class="col-span-1 w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-[#D99311]">
+                            <input type="text" placeholder="Détails" value="${edu.details}" onkeyup="onEducationChange(${index}, 'details', this.value)" class="col-span-2 w-full p-2.5 bg-white border border-gray-200 rounded-lg text-xs font-medium outline-none focus:ring-1 focus:ring-[#D99311]">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Live CV Generator Core Renderer
+        function updateCV() {
+            const firstName = document.getElementById('input-firstname').value;
+            const lastName = document.getElementById('input-lastname').value;
+            const jobTitle = document.getElementById('input-jobtitle').value;
+            const email = document.getElementById('input-email').value;
+            const phone = document.getElementById('input-phone').value;
+            const city = document.getElementById('input-city').value;
+            const linkedin = document.getElementById('input-linkedin').value;
+            const summary = document.getElementById('input-summary').value;
+            const rawSkills = document.getElementById('input-skills').value;
+            const rawLanguages = document.getElementById('input-languages').value;
+
+            // Normalize skill and language arrays
+            const skills = rawSkills.split(',').map(s => s.trim()).filter(s => s);
+            const languages = rawLanguages.split(',').map(l => l.trim()).filter(l => l);
+
+            // Fetch structural segments ready for insertion
+            let experiencesHTML = '';
+            experiences.forEach(exp => {
+                if (exp.role || exp.company) {
+                    experiencesHTML += `
+                        <div class="mb-4">
+                            <div class="flex justify-between items-start text-sm">
+                                <span class="font-bold text-[#213140]">${exp.role}</span>
+                                <span class="text-xs text-[#A6751B] font-semibold">${exp.period}</span>
+                            </div>
+                            <div class="text-xs font-bold text-gray-500 mb-1">${exp.company}</div>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">${exp.details}</p>
+                        </div>
+                    `;
+                }
+            });
+
+            let educationHTML = '';
+            educations.forEach(edu => {
+                if (edu.degree || edu.school) {
+                    educationHTML += `
+                        <div class="mb-4">
+                            <div class="flex justify-between items-start text-sm">
+                                <span class="font-bold text-[#213140]">${edu.degree}</span>
+                                <span class="text-xs text-[#A6751B] font-semibold">${edu.period}</span>
+                            </div>
+                            <div class="text-xs font-bold text-gray-500 mb-1">${edu.school}</div>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">${edu.details}</p>
+                        </div>
+                    `;
+                }
+            });
+
+            // Target HTML container initialization
+            const container = document.getElementById('cv-render-target');
+            container.innerHTML = '';
+
+            // Render Dynamic selected template
+            if (currentTemplate === 'minimalist') {
+                container.innerHTML = `
+                    <div class="p-10 flex flex-col h-full space-y-6">
+                        <!-- Minimalist Header -->
+                        <div class="border-b-2 border-[#D99311]/20 pb-5">
+                            <h1 class="text-3xl font-extrabold text-[#213140] uppercase tracking-tight">${firstName} <span class="text-[#D99311]">${lastName}</span></h1>
+                            <p class="text-sm font-bold text-gray-400 tracking-wider uppercase mt-1">${jobTitle}</p>
+                            
+                            <!-- Small Contact Pill Row -->
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500 font-semibold">
+                                <span><i class="fa-solid fa-envelope text-[#D99311] mr-1"></i> ${email}</span>
+                                <span><i class="fa-solid fa-phone text-[#D99311] mr-1"></i> ${phone}</span>
+                                <span><i class="fa-solid fa-map-pin text-[#D99311] mr-1"></i> ${city}</span>
+                                ${linkedin ? `<span><i class="fa-brands fa-linkedin text-[#D99311] mr-1"></i> ${linkedin}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Professional Summary -->
+                        ${summary ? `
+                        <div>
+                            <h2 class="text-sm font-extrabold text-[#213140] uppercase tracking-wider mb-2 border-b border-gray-100 pb-1 text-[#A6751B]">Profil Professionnel</h2>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">${summary}</p>
+                        </div>` : ''}
+
+                        <!-- Work Experiences -->
+                        <div>
+                            <h2 class="text-sm font-extrabold text-[#213140] uppercase tracking-wider mb-3 border-b border-gray-100 pb-1 text-[#A6751B]">Expérience Professionnelle</h2>
+                            ${experiencesHTML || '<p class="text-xs text-gray-400 italic">Aucune expérience renseignée.</p>'}
+                        </div>
+
+                        <!-- Education & Degrees -->
+                        <div>
+                            <h2 class="text-sm font-extrabold text-[#213140] uppercase tracking-wider mb-3 border-b border-gray-100 pb-1 text-[#A6751B]">Éducation & Diplômes</h2>
+                            ${educationHTML || '<p class="text-xs text-gray-400 italic">Aucun diplôme renseigné.</p>'}
+                        </div>
+
+                        <!-- Technical Skills & Languages Grid -->
+                        <div class="grid grid-cols-2 gap-6 pt-2">
+                            <div>
+                                <h2 class="text-sm font-extrabold text-[#213140] uppercase tracking-wider mb-2 border-b border-gray-100 pb-1 text-[#A6751B]">Compétences Clés</h2>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${skills.map(s => `<span class="bg-[#F2F2F2] text-[#213140] font-bold text-[10px] px-2.5 py-1 rounded">${s}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h2 class="text-sm font-extrabold text-[#213140] uppercase tracking-wider mb-2 border-b border-gray-100 pb-1 text-[#A6751B]">Langues</h2>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${languages.map(l => `<span class="border border-[#D99311]/30 text-[#213140] font-semibold text-[10px] px-2.5 py-0.5 rounded-full">${l}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentTemplate === 'executive') {
+                container.innerHTML = `
+                    <div class="flex flex-col h-full">
+                        <!-- Premium dark header segment -->
+                        <div class="bg-[#213140] text-white p-8 text-center relative">
+                            <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-[#D99311]"></div>
+                            <h1 class="text-3xl font-extrabold uppercase tracking-tight">${firstName} ${lastName}</h1>
+                            <p class="text-sm font-bold text-[#D99311] uppercase tracking-widest mt-1.5">${jobTitle}</p>
+                            
+                            <!-- Contact Line -->
+                            <div class="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-4 text-[11px] text-gray-300 font-medium">
+                                <span><i class="fa-solid fa-envelope text-[#D99311] mr-1"></i> ${email}</span>
+                                <span><i class="fa-solid fa-phone text-[#D99311] mr-1"></i> ${phone}</span>
+                                <span><i class="fa-solid fa-map-pin text-[#D99311] mr-1"></i> ${city}</span>
+                                ${linkedin ? `<span><i class="fa-brands fa-linkedin text-[#D99311] mr-1"></i> ${linkedin}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Inner Content padded for premium execution -->
+                        <div class="p-8 space-y-6 flex-1">
+                            <!-- Professional Summary -->
+                            ${summary ? `
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-2 flex items-center gap-2">
+                                    <span class="w-1.5 h-3.5 bg-[#D99311] rounded-sm"></span> Profil de synthèse
+                                </h2>
+                                <p class="text-[11px] text-gray-600 leading-relaxed pl-3.5">${summary}</p>
+                            </div>` : ''}
+
+                            <!-- Work Experiences -->
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <span class="w-1.5 h-3.5 bg-[#D99311] rounded-sm"></span> Expérience Professionnelle
+                                </h2>
+                                <div class="pl-3.5">
+                                    ${experiencesHTML || '<p class="text-xs text-gray-400 italic">Aucune expérience renseignée.</p>'}
+                                </div>
+                            </div>
+
+                            <!-- Education & Degrees -->
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <span class="w-1.5 h-3.5 bg-[#D99311] rounded-sm"></span> Éducation & Diplômes
+                                </h2>
+                                <div class="pl-3.5">
+                                    ${educationHTML || '<p class="text-xs text-gray-400 italic">Aucun diplôme renseigné.</p>'}
+                                </div>
+                            </div>
+
+                            <!-- Skills & Languages Row -->
+                            <div class="grid grid-cols-2 gap-6 pl-3.5 pt-2">
+                                <div>
+                                    <h2 class="text-[11px] font-black text-[#213140] uppercase tracking-wider mb-2">Expertises clés</h2>
+                                    <div class="flex flex-wrap gap-1">
+                                        ${skills.map(s => `<span class="bg-[#F2F2F2] text-[#213140] font-bold text-[9px] px-2.5 py-1 rounded-md">${s}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 class="text-[11px] font-black text-[#213140] uppercase tracking-wider mb-2">Maîtrise linguistique</h2>
+                                    <div class="flex flex-wrap gap-1">
+                                        ${languages.map(l => `<span class="border border-[#D99311]/30 text-[#213140] font-bold text-[9px] px-2.5 py-0.5 rounded-full">${l}</span>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentTemplate === 'split') {
+                container.innerHTML = `
+                    <div class="flex h-[297mm] overflow-hidden">
+                        <!-- Left sidebar col (Metadata, skills) -->
+                        <div class="w-1/3 bg-[#213140] text-white p-6 flex flex-col space-y-6">
+                            
+                            <!-- Brand/Identity Badge -->
+                            <div class="text-center pt-4">
+                                <h1 class="text-2xl font-black uppercase tracking-tight leading-none">${firstName}</h1>
+                                <h1 class="text-2xl font-black uppercase tracking-tight text-[#D99311]">${lastName}</h1>
+                                <p class="text-[10px] font-bold text-gray-400 tracking-wider uppercase mt-2">${jobTitle}</p>
+                            </div>
+
+                            <hr class="border-gray-700/60">
+
+                            <!-- Contact Sidebar segment -->
+                            <div class="space-y-3">
+                                <h2 class="text-xs font-black uppercase text-[#D99311] tracking-widest">Contact</h2>
+                                <ul class="space-y-2 text-[10px] text-gray-300 font-medium">
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-[#D99311]"></i> ${email}</li>
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-[#D99311]"></i> ${phone}</li>
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-map-pin text-[#D99311]"></i> ${city}</li>
+                                    ${linkedin ? `<li class="flex items-center gap-2"><i class="fa-brands fa-linkedin text-[#D99311]"></i> ${linkedin}</li>` : ''}
+                                </ul>
+                            </div>
+
+                            <hr class="border-gray-700/60">
+
+                            <!-- Skills Sidebar segment -->
+                            <div class="space-y-2">
+                                <h2 class="text-xs font-black uppercase text-[#D99311] tracking-widest">Compétences</h2>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${skills.map(s => `<span class="bg-white/10 hover:bg-white/15 text-white text-[9px] font-semibold px-2 py-0.5 rounded-md">${s}</span>`).join('')}
+                                </div>
+                            </div>
+
+                            <hr class="border-gray-700/60">
+
+                            <!-- Languages Sidebar segment -->
+                            <div class="space-y-2">
+                                <h2 class="text-xs font-black uppercase text-[#D99311] tracking-widest">Langues</h2>
+                                <div class="flex flex-col space-y-1 text-[10px] text-gray-300 font-medium">
+                                    ${languages.map(l => `<span>• ${l}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right main col (Core Experiences) -->
+                        <div class="w-2/3 bg-white p-8 flex flex-col space-y-6">
+                            <!-- Professional Summary -->
+                            ${summary ? `
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-2 border-b-2 border-gray-100 pb-1 text-[#A6751B]">À propos de moi</h2>
+                                <p class="text-[11px] text-gray-600 leading-relaxed">${summary}</p>
+                            </div>` : ''}
+
+                            <!-- Work Experiences -->
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-3 border-b-2 border-gray-100 pb-1 text-[#A6751B]">Expériences Professionnelles</h2>
+                                ${experiencesHTML || '<p class="text-xs text-gray-400 italic">Aucune expérience renseignée.</p>'}
+                            </div>
+
+                            <!-- Education -->
+                            <div>
+                                <h2 class="text-xs font-black text-[#213140] uppercase tracking-widest mb-3 border-b-2 border-gray-100 pb-1 text-[#A6751B]">Formation académique</h2>
+                                ${educationHTML || '<p class="text-xs text-gray-400 italic">Aucun diplôme renseigné.</p>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Export/Convert Dynamic Preview block into standard PDF download file
+        function downloadPDF() {
+            const element = document.getElementById('cv-render-target');
+            const firstName = document.getElementById('input-firstname').value || 'CV';
+            const lastName = document.getElementById('input-lastname').value || 'JobsTracker';
+
+            // High-fidelity options configuration
+            const opt = {
+                margin: 0,
+                filename: `CV_${firstName}_${lastName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Run process
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Initialize lists & pre-load state on document ready
+        window.onload = function() {
+            renderFormLists();
+            updateCV();
+        };
+    </script>
+
+</body>
+</html>

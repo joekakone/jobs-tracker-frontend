@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Tracker - Configurer mes alertes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="static/img/jobs-tracker-favicon.svg">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .domain-chip.active {
+            background-color: #D99311;
+            color: #ffffff;
+            border-color: #D99311;
+        }
+        .domain-chip.active i { color: #ffffff; }
+        .keyword-tag-remove:hover { color: #ffffff; }
+    </style>
+</head>
+<body class="bg-white text-[#213140] font-sans selection:bg-[#D99311]/20">
+    <!-- Header Navigation -->
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 px-3 md:px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4">
+            
+            <!-- Logo Section incorporating jobs-tracker-logo.svg -->
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="static/img/jobs-tracker-logo.svg" alt="JobsTracker Logo" class="h-10 w-10 transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex'">
+                <!-- Fallback in case SVG does not load instantly -->
+                <div id="logo-fallback" class="hidden h-10 w-10 rounded-xl bg-[#213140] items-center justify-center text-[#D99311]">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <div class="text-2xl font-bold text-[#213140]">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <div class="hidden md:flex space-x-8 font-semibold text-gray-600">
+                <a href="jobs.html" class="hover:text-[#D99311] transition">Offres d'emploi</a>
+                <a href="companies.html" class="hover:text-[#D99311] transition">Trouver une entreprise</a>
+                <a href="resume-generator.html" class="hover:text-[#D99311] transition">Générer un CV</a>
+                <a href="alerts.html" class="hover:text-[#D99311] transition border-b-2 border-[#D99311] pb-1">Gérer les alertes</a>
+            </div>
+            <!-- CTA Connection -->
+            <button class="bg-[#213140] hover:bg-[#213140]/90 text-white px-6 py-2.5 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-[#213140]/20 active:scale-95">
+                Connexion
+            </button>
+        </div>
+    </nav>
+
+    <!-- Alertes -->
+    <main class="bg-gray-50">
+        <!-- Page Header -->
+        <section class="px-3 md:px-4 pt-14 pb-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D99311]/10 text-[#A6751B] text-xs font-bold uppercase tracking-wider mb-5">
+                <i class="fa-solid fa-bell"></i> Alertes personnalisées
+            </div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-[#213140] mb-4 tracking-tight">
+                Ne manquez plus aucune opportunité
+            </h1>
+            <p class="text-gray-500 max-w-xl mx-auto text-lg">
+                Configurez vos domaines et mots-clés une fois, recevez les offres qui vous correspondent directement par email.
+            </p>
+        </section>
+
+        <!-- Form Section -->
+        <section class="px-3 md:px-4 pb-20">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Alert Configuration Form -->
+                <form class="lg:col-span-2 bg-white rounded-3xl shadow-[0_15px_40px_rgba(15,23,42,0.06)] border border-gray-100 p-6 md:p-10 space-y-10">
+
+                    <!-- 1. Personal Info -->
+                    <div>
+                        <h2 class="text-lg font-bold text-[#213140] mb-1 flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-[#213140] text-white text-xs flex items-center justify-center font-bold">1</span>
+                            Vos informations
+                        </h2>
+                        <p class="text-sm text-gray-500 mb-6 ml-9">Pour savoir qui prévenir et où envoyer les offres.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ml-0 md:ml-9">
+                            <div>
+                                <label class="block text-sm font-semibold text-[#213140] mb-2">Nom complet</label>
+                                <div class="relative">
+                                    <input type="text" name="full_name" placeholder="Ex : Joseph Konka" required
+                                        class="w-full p-4 pl-11 bg-[#F2F2F2]/60 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#D99311]/15 focus:border-[#D99311] focus:bg-white text-sm transition-all text-[#213140] font-medium placeholder-gray-400">
+                                    <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#213140] mb-2">Adresse email</label>
+                                <div class="relative">
+                                    <input type="email" name="email" placeholder="vous@exemple.com" required
+                                        class="w-full p-4 pl-11 bg-[#F2F2F2]/60 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#D99311]/15 focus:border-[#D99311] focus:bg-white text-sm transition-all text-[#213140] font-medium placeholder-gray-400">
+                                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-100">
+
+                    <!-- 2. Domains -->
+                    <div>
+                        <h2 class="text-lg font-bold text-[#213140] mb-1 flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-[#213140] text-white text-xs flex items-center justify-center font-bold">2</span>
+                            Domaines qui vous intéressent
+                        </h2>
+                        <p class="text-sm text-gray-500 mb-6 ml-9">Sélectionnez un ou plusieurs domaines. Vous pourrez affiner avec des mots-clés à l'étape suivante.</p>
+
+                        <div class="flex flex-wrap gap-3 ml-0 md:ml-9">
+                            <button type="button" data-domain="informatique" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-laptop-code text-[#D99311]"></i> Informatique
+                            </button>
+                            <button type="button" data-domain="finance" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-sack-dollar text-[#D99311]"></i> Banque / Finance
+                            </button>
+                            <button type="button" data-domain="comptabilite" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-calculator text-[#D99311]"></i> Comptabilité
+                            </button>
+                            <button type="button" data-domain="telecoms" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-tower-cell text-[#D99311]"></i> Télécoms
+                            </button>
+                            <button type="button" data-domain="btp" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-helmet-safety text-[#D99311]"></i> BTP / Construction
+                            </button>
+                            <button type="button" data-domain="marketing" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-bullhorn text-[#D99311]"></i> Marketing / Communication
+                            </button>
+                            <button type="button" data-domain="agroalimentaire" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-seedling text-[#D99311]"></i> Agroalimentaire
+                            </button>
+                            <button type="button" data-domain="assurance" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-shield-halved text-[#D99311]"></i> Assurance
+                            </button>
+                            <button type="button" data-domain="sante" class="domain-chip flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 text-sm font-semibold text-[#213140] hover:border-[#D99311] transition-colors">
+                                <i class="fa-solid fa-briefcase-medical text-[#D99311]"></i> Santé
+                            </button>
+                        </div>
+                        <!-- Hidden field carrying the selected domains as a comma-separated list -->
+                        <input type="hidden" name="domains" id="domains-input">
+                    </div>
+
+                    <hr class="border-gray-100">
+
+                    <!-- 3. Keywords -->
+                    <div>
+                        <h2 class="text-lg font-bold text-[#213140] mb-1 flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-[#213140] text-white text-xs flex items-center justify-center font-bold">3</span>
+                            Mots-clés précis
+                        </h2>
+                        <p class="text-sm text-gray-500 mb-6 ml-9">Ajoutez des intitulés de poste, outils ou compétences (ex : "data analyst", "python", "comptable"). Appuyez sur Entrée pour ajouter un mot-clé.</p>
+
+                        <div class="ml-0 md:ml-9">
+                            <div class="relative mb-3">
+                                <input type="text" id="keyword-input" placeholder="Tapez un mot-clé puis appuyez sur Entrée..."
+                                    class="w-full p-4 pl-11 bg-[#F2F2F2]/60 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#D99311]/15 focus:border-[#D99311] focus:bg-white text-sm transition-all text-[#213140] font-medium placeholder-gray-400">
+                                <i class="fa-solid fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            </div>
+
+                            <div id="keyword-tags" class="flex flex-wrap gap-2 min-h-[2rem]">
+                                <!-- Example pre-filled tags, users can remove them -->
+                                <span class="keyword-tag flex items-center gap-2 bg-[#213140] text-white text-sm font-semibold pl-3 pr-2 py-1.5 rounded-full">
+                                    data analyst
+                                    <button type="button" class="keyword-tag-remove text-white/60 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                                </span>
+                                <span class="keyword-tag flex items-center gap-2 bg-[#213140] text-white text-sm font-semibold pl-3 pr-2 py-1.5 rounded-full">
+                                    python
+                                    <button type="button" class="keyword-tag-remove text-white/60 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                                </span>
+                            </div>
+                            <!-- Hidden field carrying the keyword list as a comma-separated list -->
+                            <input type="hidden" name="keywords" id="keywords-input" value="data analyst,python">
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="pt-2">
+                        <button type="submit" class="w-full md:w-auto bg-gradient-to-r from-[#D99311] to-[#A6751B] hover:from-[#A6751B] hover:to-[#D99311] text-white px-10 py-4 rounded-2xl font-bold transition-all duration-300 shadow-md hover:shadow-[#D99311]/30 flex items-center justify-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-bell"></i> Activer mes alertes
+                        </button>
+                        <p class="text-xs text-gray-400 mt-3">Vous pourrez modifier ou désactiver vos alertes à tout moment depuis le lien présent dans chaque email reçu.</p>
+                    </div>
+                </form>
+
+                <!-- Sidebar Info -->
+                <aside class="lg:col-span-1">
+                    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sticky top-24">
+                        <h3 class="font-bold text-[#213140] mb-5 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-[#D99311]"></i> Comment ça marche ?
+                        </h3>
+                        <ul class="space-y-5">
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#D99311]/10 text-[#D99311] flex items-center justify-center shrink-0 text-sm font-bold">1</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">Nous scannons chaque jour les nouvelles offres publiées au Togo.</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#D99311]/10 text-[#D99311] flex items-center justify-center shrink-0 text-sm font-bold">2</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">Nous les comparons à vos domaines et mots-clés.</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#D99311]/10 text-[#D99311] flex items-center justify-center shrink-0 text-sm font-bold">3</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">Vous recevez un résumé par email dès qu'une offre correspond.</p>
+                            </li>
+                        </ul>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                <i class="fa-solid fa-lock text-gray-300 mr-1"></i>
+                                Votre email n'est utilisé que pour vous envoyer ces alertes et n'est jamais partagé avec des tiers.
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-[#213140] text-white pt-16 pb-8 px-3 md:px-4 shrink-0">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-[#F2F2F2]/10 pb-12">
+            
+            <!-- Left Info Block -->
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-2xl font-bold text-white mb-6">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+                <p class="text-[#F2F2F2]/75 text-sm leading-relaxed mb-6">La plateforme n°1 pour les opportunités de stages académiques, alternances et premiers emplois au Togo.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <!-- Helpful Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Liens Utiles</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Toutes les offres</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Lomé</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Kara</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Espace Recruteurs</a></li>
+                </ul>
+            </div>
+            <!-- Support Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Support</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">FAQ / Aide</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Contactez-nous</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            <!-- Newsletter Block -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Alerte Emploi</h4>
+                <p class="text-[#F2F2F2]/75 mb-4 text-xs leading-relaxed">Recevez directement les opportunités de stages fraichement collectées chaque lundi.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Votre adresse email" class="bg-white/10 border-none p-3.5 rounded-l-2xl w-full focus:ring-1 focus:ring-[#D99311] outline-none text-sm text-white placeholder-gray-400">
+                    <button class="bg-[#D99311] hover:bg-[#A6751B] px-5 rounded-r-2xl text-white transition-colors"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright Row -->
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mt-8 text-[#F2F2F2]/40 text-xs">
+            <p>© 2026 Jobs Tracker. Tous droits réservés.</p>
+            <p class="mt-2 md:mt-0">Fait avec <i class="fa fa-heart text-red-500"></i> à Lomé.</p>
+        </div>
+    </footer>
+
+    <!-- Alert form behavior: toggleable domain chips + dynamic keyword tag input -->
+    <script>
+        // --- Domain chips (multi-select toggle) ---
+        const domainsInput = document.getElementById('domains-input');
+        const selectedDomains = new Set();
+
+        document.querySelectorAll('.domain-chip').forEach((chip) => {
+            chip.addEventListener('click', () => {
+                const domain = chip.dataset.domain;
+                chip.classList.toggle('active');
+                if (selectedDomains.has(domain)) {
+                    selectedDomains.delete(domain);
+                } else {
+                    selectedDomains.add(domain);
+                }
+                domainsInput.value = Array.from(selectedDomains).join(',');
+            });
+        });
+
+        // --- Keyword tags (dynamic add/remove) ---
+        const keywordInput = document.getElementById('keyword-input');
+        const keywordTagsContainer = document.getElementById('keyword-tags');
+        const keywordsInput = document.getElementById('keywords-input');
+
+        function syncKeywordsInput() {
+            const tags = Array.from(keywordTagsContainer.querySelectorAll('.keyword-tag'))
+                .map((tag) => tag.dataset.value);
+            keywordsInput.value = tags.join(',');
+        }
+
+        function addKeywordTag(value) {
+            const trimmed = value.trim();
+            if (!trimmed) return;
+
+            const existing = Array.from(keywordTagsContainer.querySelectorAll('.keyword-tag'))
+                .map((tag) => tag.dataset.value.toLowerCase());
+            if (existing.includes(trimmed.toLowerCase())) return;
+
+            const tag = document.createElement('span');
+            tag.className = 'keyword-tag flex items-center gap-2 bg-[#213140] text-white text-sm font-semibold pl-3 pr-2 py-1.5 rounded-full';
+            tag.dataset.value = trimmed;
+            tag.innerHTML = `${trimmed} <button type="button" class="keyword-tag-remove text-white/60 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>`;
+
+            tag.querySelector('.keyword-tag-remove').addEventListener('click', () => {
+                tag.remove();
+                syncKeywordsInput();
+            });
+
+            keywordTagsContainer.appendChild(tag);
+            syncKeywordsInput();
+        }
+
+        // Wire up remove buttons on the pre-filled example tags
+        keywordTagsContainer.querySelectorAll('.keyword-tag').forEach((tag) => {
+            tag.dataset.value = tag.textContent.trim();
+            tag.querySelector('.keyword-tag-remove').addEventListener('click', () => {
+                tag.remove();
+                syncKeywordsInput();
+            });
+        });
+
+        keywordInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ',') {
+                event.preventDefault();
+                addKeywordTag(keywordInput.value);
+                keywordInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

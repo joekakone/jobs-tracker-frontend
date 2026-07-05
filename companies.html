@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Tracker - Trouver une entreprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="static/img/jobs-tracker-favicon.svg">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #D99311; }
+        .dropdown-chevron { transition: transform 0.2s ease; }
+        .dropdown-chevron.rotate-180 { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-white text-[#213140] font-sans selection:bg-[#D99311]/20">
+    <!-- Header Navigation -->
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 px-3 md:px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4">
+            
+            <!-- Logo Section incorporating jobs-tracker-logo.svg -->
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="static/img/jobs-tracker-logo.svg" alt="JobsTracker Logo" class="h-10 w-10 transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex'">
+                <!-- Fallback in case SVG does not load instantly -->
+                <div id="logo-fallback" class="hidden h-10 w-10 rounded-xl bg-[#213140] items-center justify-center text-[#D99311]">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <div class="text-2xl font-bold text-[#213140]">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <div class="hidden md:flex space-x-8 font-semibold text-gray-600">
+                <a href="jobs.html" class="hover:text-[#D99311] transition">Offres d'emploi</a>
+                <a href="companies.html" class="text-[#D99311] transition border-b-2 border-[#D99311] pb-1">Trouver une entreprise</a>
+                <a href="resume-generator.html" class="hover:text-[#D99311] transition">Générer un CV</a>
+                <a href="alerts.html" class="hover:text-[#D99311] transition">Gérer les alertes</a>
+            </div>
+            <!-- CTA Connection -->
+            <button class="bg-[#213140] hover:bg-[#213140]/90 text-white px-6 py-2.5 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-[#213140]/20 active:scale-95">
+                Connexion
+            </button>
+        </div>
+    </nav>
+
+    <!-- Companies -->
+    <main>
+        <!-- Page Header + Search/Filter Bar -->
+        <section class="bg-gray-50 border-b border-gray-100 px-3 md:px-4 py-14">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D99311]/10 text-[#A6751B] text-xs font-bold uppercase tracking-wider mb-5">
+                    <i class="fa-solid fa-building"></i> Annuaire des recruteurs
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-[#213140] mb-4 tracking-tight">
+                    Trouvez l'entreprise qui vous correspond
+                </h1>
+                <p class="text-gray-500 max-w-2xl mx-auto mb-10 text-lg">
+                    Découvrez les entreprises qui recrutent actuellement au Togo, leur secteur d'activité et le nombre d'offres ouvertes.
+                </p>
+
+                <!-- Search / Filter Bar -->
+                <div class="bg-white p-4 rounded-3xl shadow-[0_15px_40px_rgba(15,23,42,0.08)] border border-gray-100 max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_auto] gap-3">
+
+                        <!-- Company Name Search -->
+                        <div class="relative">
+                            <input type="text" placeholder="Nom de l'entreprise..." class="w-full h-full p-4 pl-11 bg-[#F2F2F2]/60 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#D99311]/15 focus:border-[#D99311] focus:bg-white text-sm transition-all text-[#213140] font-medium placeholder-gray-400">
+                            <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+
+                        <!-- Sector Custom Dropdown -->
+                        <div class="relative custom-dropdown" data-dropdown data-value="">
+                            <button type="button" class="dropdown-trigger relative w-full h-full flex items-center gap-2 p-4 pl-11 pr-9 border border-gray-100 rounded-2xl bg-[#F2F2F2]/60 text-[#213140] font-semibold text-sm outline-none focus:bg-white focus:border-[#D99311] focus:ring-4 focus:ring-[#D99311]/15 transition-all cursor-pointer text-left">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-[#D99311] w-5">
+                                    <i class="fa-solid fa-layer-group text-sm"></i>
+                                </span>
+                                <span class="dropdown-label truncate">Secteur</span>
+                                <i class="dropdown-chevron fa-solid fa-chevron-down text-[#D99311] text-xs absolute right-4 top-1/2 -translate-y-1/2"></i>
+                            </button>
+                            <ul class="dropdown-panel hidden absolute left-0 right-0 z-30 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-2 max-h-64 overflow-y-auto custom-scrollbar text-left">
+                                <li data-value="" class="dropdown-option px-4 py-2.5 text-sm font-semibold text-gray-400 cursor-pointer hover:bg-gray-50 transition-colors">Tous les secteurs</li>
+                                <li data-value="banque" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Banque / Finance</li>
+                                <li data-value="telecom" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Télécoms</li>
+                                <li data-value="btp" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">BTP / Construction</li>
+                                <li data-value="it" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Informatique</li>
+                                <li data-value="agro" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Agroalimentaire</li>
+                                <li data-value="assurance" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Assurance</li>
+                            </ul>
+                        </div>
+
+                        <!-- City Custom Dropdown -->
+                        <div class="relative custom-dropdown" data-dropdown data-value="">
+                            <button type="button" class="dropdown-trigger relative w-full h-full flex items-center gap-2 p-4 pl-11 pr-9 border border-gray-100 rounded-2xl bg-[#F2F2F2]/60 text-[#213140] font-semibold text-sm outline-none focus:bg-white focus:border-[#D99311] focus:ring-4 focus:ring-[#D99311]/15 transition-all cursor-pointer text-left">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-[#D99311] w-5">
+                                    <i class="fa-solid fa-location-dot text-sm"></i>
+                                </span>
+                                <span class="dropdown-label truncate">Ville</span>
+                                <i class="dropdown-chevron fa-solid fa-chevron-down text-[#D99311] text-xs absolute right-4 top-1/2 -translate-y-1/2"></i>
+                            </button>
+                            <ul class="dropdown-panel hidden absolute left-0 right-0 z-30 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-2 max-h-64 overflow-y-auto custom-scrollbar text-left">
+                                <li data-value="" class="dropdown-option px-4 py-2.5 text-sm font-semibold text-gray-400 cursor-pointer hover:bg-gray-50 transition-colors">Toutes les villes</li>
+                                <li data-value="lome" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Lomé</li>
+                                <li data-value="kara" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Kara</li>
+                                <li data-value="atakpame" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Atakpamé</li>
+                                <li data-value="kpalime" class="dropdown-option px-4 py-2.5 text-sm font-medium text-[#213140] cursor-pointer hover:bg-[#D99311]/10 hover:text-[#D99311] transition-colors">Kpalimé</li>
+                            </ul>
+                        </div>
+
+                        <!-- Search Button -->
+                        <button class="bg-gradient-to-r from-[#D99311] to-[#A6751B] hover:from-[#A6751B] hover:to-[#D99311] text-white px-6 rounded-2xl font-bold transition-all duration-300 shadow-md hover:shadow-[#D99311]/30 flex items-center justify-center gap-2 active:scale-95 text-sm">
+                            <i class="fa fa-search"></i>
+                            <span class="md:hidden">Rechercher</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Row -->
+        <section class="px-3 md:px-4 py-10 border-b border-gray-100">
+            <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <p class="text-3xl font-extrabold text-[#213140]">128</p>
+                    <p class="text-sm text-gray-500 font-medium">Entreprises référencées</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-extrabold text-[#213140]">342</p>
+                    <p class="text-sm text-gray-500 font-medium">Offres actives</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-extrabold text-[#213140]">9</p>
+                    <p class="text-sm text-gray-500 font-medium">Secteurs couverts</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-extrabold text-[#213140]">4</p>
+                    <p class="text-sm text-gray-500 font-medium">Villes couvertes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Companies Grid -->
+        <section class="px-3 md:px-4 py-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-xl font-bold text-[#213140]">128 entreprises trouvées</h2>
+                    <div class="hidden md:flex items-center gap-2 text-sm text-gray-500 font-medium">
+                        <span>Trier par :</span>
+                        <span class="text-[#D99311] font-semibold cursor-pointer">Offres les plus actives</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- Company Card Template (repeated) -->
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="w-14 h-14 rounded-2xl bg-[#213140] flex items-center justify-center text-white font-bold text-lg shrink-0">TB</div>
+                            <span class="text-xs font-bold text-[#D99311] bg-[#D99311]/10 px-3 py-1.5 rounded-full">12 offres</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">TogoBank Group</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Banque / Finance</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Groupe bancaire régional présent à Lomé, Kara et Kpalimé, spécialisé dans le financement des PME.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Lomé</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="w-14 h-14 rounded-2xl bg-[#D99311] flex items-center justify-center text-white font-bold text-lg shrink-0">CT</div>
+                            <span class="text-xs font-bold text-[#D99311] bg-[#D99311]/10 px-3 py-1.5 rounded-full">8 offres</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">ConnectTel Togo</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Télécoms</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Opérateur télécom en pleine expansion, recrute des profils techniques et commerciaux.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Lomé</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="w-14 h-14 rounded-2xl bg-[#475467] flex items-center justify-center text-white font-bold text-lg shrink-0">KB</div>
+                            <span class="text-xs font-bold text-[#D99311] bg-[#D99311]/10 px-3 py-1.5 rounded-full">5 offres</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">Kara BTP Services</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">BTP / Construction</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Entreprise de construction et de génie civil, active sur les grands chantiers de la région de Kara.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Kara</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="w-14 h-14 rounded-2xl bg-[#213140] flex items-center justify-center text-white font-bold text-lg shrink-0">LD</div>
+                            <span class="text-xs font-bold text-[#D99311] bg-[#D99311]/10 px-3 py-1.5 rounded-full">15 offres</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">Lomé Digital Solutions</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Informatique</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Agence de développement web et mobile, l'un des plus gros recruteurs tech de la capitale.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Lomé</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[#D99311] flex items-center justify-center text-white font-bold text-lg shrink-0 mb-5">AT</div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">AgroTogo Export</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Agroalimentaire</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Coopérative d'export de produits agricoles (cacao, café, coton), présente à Kpalimé et Atakpamé.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Kpalimé</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="group bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-lg hover:border-[#D99311]/30 transition-all duration-300">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="w-14 h-14 rounded-2xl bg-[#475467] flex items-center justify-center text-white font-bold text-lg shrink-0">SA</div>
+                            <span class="text-xs font-bold text-[#D99311] bg-[#D99311]/10 px-3 py-1.5 rounded-full">6 offres</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#213140] mb-1 group-hover:text-[#D99311] transition-colors">Sahel Assurances</h3>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Assurance</p>
+                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Compagnie d'assurance multirisques, recrute régulièrement des profils commerciaux et actuariat.</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500 font-medium"><i class="fa-solid fa-location-dot text-[#D99311] mr-1"></i> Lomé</span>
+                            <span class="font-bold text-[#213140] group-hover:text-[#D99311] transition-colors">Voir le profil <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                        </div>
+                    </a>
+
+                </div>
+
+                <!-- Load More -->
+                <div class="flex justify-center mt-12">
+                    <button class="border-2 border-[#213140] text-[#213140] hover:bg-[#213140] hover:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300">
+                        Voir plus d'entreprises
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-[#213140] text-white pt-16 pb-8 px-3 md:px-4 shrink-0">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-[#F2F2F2]/10 pb-12">
+            
+            <!-- Left Info Block -->
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-2xl font-bold text-white mb-6">
+                    Jobs <span class="text-[#D99311]">Tracker</span>
+                </div>
+                <p class="text-[#F2F2F2]/75 text-sm leading-relaxed mb-6">La plateforme n°1 pour les opportunités de stages académiques, alternances et premiers emplois au Togo.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-[#F2F2F2]/60 hover:text-[#D99311] transition-colors text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <!-- Helpful Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Liens Utiles</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Toutes les offres</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Lomé</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Stages à Kara</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Espace Recruteurs</a></li>
+                </ul>
+            </div>
+            <!-- Support Links -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Support</h4>
+                <ul class="space-y-3 text-sm text-[#F2F2F2]/75">
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">FAQ / Aide</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Contactez-nous</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-[#D99311] transition-colors">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            <!-- Newsletter Block -->
+            <div>
+                <h4 class="font-bold mb-6 text-[#D99311] uppercase tracking-wider text-xs">Alerte Emploi</h4>
+                <p class="text-[#F2F2F2]/75 mb-4 text-xs leading-relaxed">Recevez directement les opportunités de stages fraichement collectées chaque lundi.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Votre adresse email" class="bg-white/10 border-none p-3.5 rounded-l-2xl w-full focus:ring-1 focus:ring-[#D99311] outline-none text-sm text-white placeholder-gray-400">
+                    <button class="bg-[#D99311] hover:bg-[#A6751B] px-5 rounded-r-2xl text-white transition-colors"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright Row -->
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mt-8 text-[#F2F2F2]/40 text-xs">
+            <p>© 2026 Jobs Tracker. Tous droits réservés.</p>
+            <p class="mt-2 md:mt-0">Fait avec <i class="fa fa-heart text-red-500"></i> à Lomé.</p>
+        </div>
+    </footer>
+
+    <!-- Custom dropdown behavior -->
+    <script>
+        document.querySelectorAll('[data-dropdown]').forEach((dropdown) => {
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+            const panel = dropdown.querySelector('.dropdown-panel');
+            const label = dropdown.querySelector('.dropdown-label');
+            const chevron = dropdown.querySelector('.dropdown-chevron');
+
+            const closeAllPanels = () => {
+                document.querySelectorAll('.dropdown-panel').forEach((p) => p.classList.add('hidden'));
+                document.querySelectorAll('.dropdown-chevron').forEach((c) => c.classList.remove('rotate-180'));
+            };
+
+            trigger.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isOpen = !panel.classList.contains('hidden');
+                closeAllPanels();
+                if (!isOpen) {
+                    panel.classList.remove('hidden');
+                    chevron.classList.add('rotate-180');
+                }
+            });
+
+            panel.querySelectorAll('.dropdown-option').forEach((option) => {
+                option.addEventListener('click', () => {
+                    label.textContent = option.textContent.trim();
+                    dropdown.dataset.value = option.dataset.value;
+
+                    panel.querySelectorAll('.dropdown-option').forEach((o) => {
+                        o.classList.remove('bg-[#D99311]/10', 'text-[#D99311]');
+                    });
+                    option.classList.add('bg-[#D99311]/10', 'text-[#D99311]');
+
+                    closeAllPanels();
+                });
+            });
+        });
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-panel').forEach((p) => p.classList.add('hidden'));
+            document.querySelectorAll('.dropdown-chevron').forEach((c) => c.classList.remove('rotate-180'));
+        });
+    </script>
+</body>
+</html>
